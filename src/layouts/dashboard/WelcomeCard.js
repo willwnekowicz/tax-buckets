@@ -22,6 +22,9 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     width: 200,
   },
+  inputLabel: {
+    color: '#0096FB',
+  },
   section: {
     marginTop: 40,
     paddingTop: 40,
@@ -71,6 +74,7 @@ class WelcomeCard extends Component {
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
+              classes: classes.inputLabel,
             }}
             margin="normal"
           />

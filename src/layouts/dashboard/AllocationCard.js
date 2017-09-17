@@ -22,7 +22,7 @@ const styles = theme => ({
     textAlign: 'center',
   }),
   allocatableAmount: {
-    color: '#3B8EA5',
+    color: '#0096FB',
     fontWeight: '600',
   },
   section: {
@@ -127,7 +127,10 @@ class AllocationCard extends Component {
         </Typography>
         <div className={classes.section}>
           <Typography type="title" component="p">
-            Here's what the Federal Budget looks like:
+            Here's what the Federal Budget looks like
+          </Typography>
+          <Typography type="subheading" component="p">
+            Move the sliders to set the budget to what you think it should be.
           </Typography>
         </div>
         <br />
@@ -182,6 +185,8 @@ class AllocationCard extends Component {
               graphId="mandatory"
               chartData={this.state.mandatoryData}
             />
+            <br />
+            <br />
             <Typography type="subheading" component="p">
               The Mandatory budget includes existing committments that must be paid and cannot be change.
             </Typography>
@@ -198,6 +203,8 @@ class AllocationCard extends Component {
               graphId="total"
               chartData={this.state.totalData}
             />
+            <br />
+            <br />
             <Typography type="subheading" component="p">
               The Total budget includes Discretionary spending, Mandatory spending, and Interest on Debt.
             </Typography>

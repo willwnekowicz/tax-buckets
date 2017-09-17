@@ -67,3 +67,7 @@ code {
   height: 16px;
   margin-right: 10px;
 }
+
+.my-pretty-chart-container {
+  height: 360px!important;
+}

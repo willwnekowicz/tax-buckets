@@ -15,6 +15,31 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+
+const theme = createMuiTheme({
+  "palette": {
+    "type": "light",
+    "primary": {
+      "50": "#0096FB",
+      "100": "#0096FB",
+      "200": "#0096FB",
+      "300": "#0096FB",
+      "400": "#0096FB",
+      "500": "#0096FB",
+      "600": "#0096FB",
+      "700": "#0096FB",
+      "800": "#0096FB",
+      "900": "#0096FB",
+      "A100": "#0096FB",
+      "A200": "#0096FB",
+      "A400": "#0096FB",
+      "A700": "#0096FB",
+      "contrastDefaultColor": "light"
+    },
+  }
+});
+
 class App extends Component {
   render() {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
@@ -39,17 +64,19 @@ class App extends Component {
     )
 
     return (
-      <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-          <Link to="/" className="pure-menu-heading pure-menu-link">Tax Buckets</Link>
-          <ul className="pure-menu-list navbar-right">
-            <OnlyGuestLinks />
-            <OnlyAuthLinks />
-          </ul>
-        </nav>
+      <MuiThemeProvider theme={theme}>
+        <div className="App">
+          <nav className="navbar pure-menu pure-menu-horizontal">
+            <Link to="/" className="pure-menu-heading pure-menu-link">Tax Buckets</Link>
+            <ul className="pure-menu-list navbar-right">
+              <OnlyGuestLinks />
+              <OnlyAuthLinks />
+            </ul>
+          </nav>
 
-        {this.props.children}
-      </div>
+          {this.props.children}
+        </div>
+      </MuiThemeProvider>
     );
   }
 }

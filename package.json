@@ -2,6 +2,7 @@
   "name": "react-auth-box",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://flysonic10.github.io/tax-buckets",
   "devDependencies": {
     "autoprefixer": "6.5.1",
     "babel-core": "6.17.0",

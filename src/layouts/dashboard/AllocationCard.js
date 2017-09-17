@@ -8,6 +8,8 @@ import GooglePieChart from './GooglePieChart'
 import SwipeableViews from 'react-swipeable-views';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
+import DiscretionaryControls from './DiscretionaryControls'
+
 const styles = theme => ({
   root: theme.mixins.gutters({
     paddingTop: 40,
@@ -99,28 +101,54 @@ class AllocationCard extends Component {
           fullWidth
           centered
         >
-          <Tab label="Discretionary Budget ($1.070 T)" />
-          <Tab label="Mandatory Budget ($2.573 T)" />
-          <Tab label={`Total Budget ($4.021 T)`} />
+          <Tab label="Discretionary Budget" />
+          <Tab label="Mandatory Budget" />
+          <Tab label="Total Budget" />
         </Tabs>
         <SwipeableViews index={this.state.tabValue} onChangeIndex={this.handleChangeIndex}>
           <TabContainer>
+            <br />
+            <Typography type="title" component="p">
+              2018 Discretionary Budget
+            </Typography>
+            <Typography type="subheading" component="p">
+              ($1.070 T)
+            </Typography>
             <GooglePieChart
               graphId="discretionary"
               chartData={this.state.discretionaryData}
             />
+            <DiscretionaryControls />
           </TabContainer>
           <TabContainer>
+            <Typography type="title" component="p">
+              2018 Mandatory Budget
+            </Typography>
+            <Typography type="subheading" component="p">
+              ($2.573 T)
+            </Typography>
             <GooglePieChart
               graphId="mandatory"
               chartData={this.state.mandatoryData}
             />
+            <Typography type="subheading" component="p">
+              The Mandatory budget includes existing committments that must be paid and cannot be change.
+            </Typography>
           </TabContainer>
           <TabContainer>
+            <Typography type="title" component="p">
+              2018 Total Budget
+            </Typography>
+            <Typography type="subheading" component="p">
+              ($4.021 T)
+            </Typography>
             <GooglePieChart
               graphId="total"
               chartData={this.state.totalData}
             />
+            <Typography type="subheading" component="p">
+              The Total budget includes Discretionary spending, Mandatory spending, and Interest on Debt.
+            </Typography>
           </TabContainer>
         </SwipeableViews>
       </Paper>

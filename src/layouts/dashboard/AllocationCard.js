@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { withStyles } from 'material-ui/styles';
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
-
+import { withStyles } from 'material-ui/styles'
+import Paper from 'material-ui/Paper'
+import Typography from 'material-ui/Typography'
+import GooglePieChart from './GooglePieChart'
+import SwipeableViews from 'react-swipeable-views';
+import Tabs, { Tab } from 'material-ui/Tabs';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -24,19 +26,55 @@ const styles = theme => ({
   }
 });
 
+function TabContainer(props) {
+  return <div style={{ padding: 20 }}>{props.children}</div>;
+}
+
 class AllocationCard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      taxAmount: null
+      taxAmount: null,
+      tabValue: 0,
+      discretionaryData: [
+        ['Item','Spending'],
+        ['Military',516.10],
+        ['Education',68.00],
+        ['Energy',37.80],
+        ['Nuclear Weapons',12.90],
+        ['Health & Human Services',73.50],
+        ['Homeland Security',42.40],
+        ['Housing & Urban Development',38.80],
+        ['Justice',18.10],
+        ['NASA',19.70],
+        ['State Department',36.60],
+        ['Veterans Affairs',75.10],
+        ['Other',128.90],
+      ],
+      mandatoryData: [
+        ['Item','Spending'],
+        ['Social Security',	946],
+        ['Medicare', 593],
+        ['Medicaid', 378],
+        ['Other', 656],
+      ],
+      totalData: [
+        ['Item','Spending'],
+        ['Discretionary',	1070],
+        ['Mandatory', 2573],
+        ['Interest on Debt', 276],
+      ]
     }
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+  handleChange = (event, value) => {
+    this.setState({ tabValue: value });
   }
+
+  handleChangeIndex = index => {
+    this.setState({ tabValue: index });
+  }
+
 
   render() {
     const classes = this.props.classes
@@ -52,6 +90,39 @@ class AllocationCard extends Component {
             Here's what the Federal Budget looks like?
           </Typography>
         </div>
+        <br />
+        <Tabs
+          value={this.state.tabValue}
+          onChange={this.handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          fullWidth
+          centered
+        >
+          <Tab label="Discretionary Budget ($1.070 T)" />
+          <Tab label="Mandatory Budget ($2.573 T)" />
+          <Tab label={`Total Budget ($4.021 T)`} />
+        </Tabs>
+        <SwipeableViews index={this.state.tabValue} onChangeIndex={this.handleChangeIndex}>
+          <TabContainer>
+            <GooglePieChart
+              graphId="discretionary"
+              chartData={this.state.discretionaryData}
+            />
+          </TabContainer>
+          <TabContainer>
+            <GooglePieChart
+              graphId="mandatory"
+              chartData={this.state.mandatoryData}
+            />
+          </TabContainer>
+          <TabContainer>
+            <GooglePieChart
+              graphId="total"
+              chartData={this.state.totalData}
+            />
+          </TabContainer>
+        </SwipeableViews>
       </Paper>
     )
   }

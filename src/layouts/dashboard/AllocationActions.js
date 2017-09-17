@@ -49,7 +49,7 @@ export function submitAllocations(allocations) {
         allocationContract.deployed().then(function(instance) {
           allocationInstance = instance
 
-          allocationInstance.submitAllocations(allocations, {from: coinbase})
+          allocationInstance.submitAllocations(allocations, {from: coinbase, gas: 4476767})
             .then(function(result) {
               console.log('result', result)
               dispatch(submittedAllocations(result))

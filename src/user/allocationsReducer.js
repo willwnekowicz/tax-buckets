@@ -1,12 +1,12 @@
 const initialState = {
-
+  submitted: false,
 }
 
 const allocationsReducer = (state = initialState, action) => {
-  if (action.type === 'UPDATED_ALLOCATIONS')
+  if (action.type === 'SUBMITTED_ALLOCATIONS')
   {
     return Object.assign({}, state, {
-      items: action.payload.allocationItems
+      submitted: true,
     })
   }
 

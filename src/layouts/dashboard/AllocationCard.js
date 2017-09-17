@@ -111,7 +111,7 @@ class AllocationCard extends Component {
   }
 
   handleSubmit() {
-    const allocations = _.map(this.state.temp_items, (item) => item.percentage * 100)
+    const allocations = _.map(this.state.items, (item) => item.percentage * 100)
     this.props.submitAllocations(allocations)
     this.setState({disableControls: true})
   }

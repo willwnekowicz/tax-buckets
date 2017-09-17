@@ -5,6 +5,7 @@ import { withStyles } from 'material-ui/styles'
 
 import WelcomeCard from './WelcomeCard'
 import AllocationCard from './AllocationCard'
+import ContactCard from './ContactCard'
 
 
 const styles = theme => ({
@@ -21,13 +22,15 @@ class Dashboard extends Component {
   render() {
     const { authData, tax } = this.props
     const hasTaxAmount = tax && tax.taxAmount
+    const allocationsSubmitted = this.props.allocationsSubmitted
 
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
           {hasTaxAmount ? null : (<WelcomeCard user={authData} />)}
-          {!hasTaxAmount ? null : (<AllocationCard user={authData} />) }
+          {!hasTaxAmount || allocationsSubmitted ? null : (<AllocationCard user={authData} />) }
+          {allocationsSubmitted ? (<ContactCard />) : null}
           </div>
         </div>
       </main>
@@ -37,7 +40,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    tax: state.tax
+    tax: state.tax,
+    allocationsSubmitted: state.allocations.submitted,
   }
 }
 

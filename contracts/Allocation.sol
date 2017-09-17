@@ -36,7 +36,8 @@ contract Allocation is Ownable {
     return true;
   }
 
-//  function getOwnAllocations() constant returns  {
-//    return users[msg.sender].allocations
-//  }
+  function verifyUser(address userAddress) onlyOwner payable returns (bool success) {
+    users[userAddress].verified = true;
+    return true;
+  }
 }

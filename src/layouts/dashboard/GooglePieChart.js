@@ -2,10 +2,6 @@ import React from 'react';
 import { Chart } from 'react-google-charts';
 
 class GooglePieChart extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     const { graphId, chartData } = this.props
 

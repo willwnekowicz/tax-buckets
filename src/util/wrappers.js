@@ -4,7 +4,7 @@ import { routerActions } from 'react-router-redux'
 // Layout Component Wrappers
 
 export const MockUserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => {return {name: 'Mock User'}},
+  authSelector: state => {return {name: 'William'}},
   redirectAction: routerActions.replace,
   failureRedirectPath: '/', // '/login' by default.
   wrapperDisplayName: 'UserIsAuthenticated'

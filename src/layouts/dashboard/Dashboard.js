@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+import { withStyles } from 'material-ui/styles'
 
 import WelcomeCard from './WelcomeCard'
 import AllocationCard from './AllocationCard'
+
+
+const styles = theme => ({
+
+});
 
 
 class Dashboard extends Component {
@@ -11,14 +19,15 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { authData } = this.props
+    const { authData, tax } = this.props
+    const hasTaxAmount = tax && tax.taxAmount
 
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
-          <WelcomeCard user={authData} />
-          <AllocationCard user={authData} />
+          {hasTaxAmount ? null : (<WelcomeCard user={authData} />)}
+          {!hasTaxAmount ? null : (<AllocationCard user={authData} />) }
           </div>
         </div>
       </main>
@@ -26,4 +35,20 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+const mapStateToProps = (state, ownProps) => {
+  return {
+    tax: state.tax
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+const DashboardContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard)
+
+export default withStyles(styles)(DashboardContainer)

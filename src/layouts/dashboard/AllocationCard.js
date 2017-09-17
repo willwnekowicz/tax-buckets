@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
+
+import { submitAllocations } from './AllocationActions'
 
 import { withStyles } from 'material-ui/styles'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import GooglePieChart from './GooglePieChart'
-import SwipeableViews from 'react-swipeable-views';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import SwipeableViews from 'react-swipeable-views'
+import Tabs, { Tab } from 'material-ui/Tabs'
+import Button from 'material-ui/Button'
 
 import DiscretionaryControls from './DiscretionaryControls'
 
@@ -36,6 +40,7 @@ class AllocationCard extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      disableControls: false,
       taxAmount: null,
       tabValue: 0,
       discretionaryData: [
@@ -65,6 +70,20 @@ class AllocationCard extends Component {
         ['Discretionary',	1070],
         ['Mandatory', 2573],
         ['Interest on Debt', 276],
+      ],
+      items: [
+        {name: 'Military', percentage: 48.23},
+        {name: 'Education', percentage: 6.35},
+        {name: 'Energy', percentage: 3.53},
+        {name: 'Nuclear Weapons', percentage: 1.20},
+        {name: 'Health & Human Services', percentage: 6.86},
+        {name: 'Homeland Security', percentage: 3.96},
+        {name: 'Housing & Urban Development', percentage: 3.62},
+        {name: 'Justice', percentage: 1.69},
+        {name: 'NASA', percentage: 1.84},
+        {name: 'State Department', percentage: 3.42},
+        {name: 'Veterans Affairs', percentage: 7.01},
+        {name: 'Other', percentage: 12.04}
       ]
     }
   }
@@ -77,6 +96,25 @@ class AllocationCard extends Component {
     this.setState({ tabValue: index });
   }
 
+  handleControlChange = items => {
+    this.formatChartData(items)
+    this.setState({items: [...items]})
+  }
+
+  formatChartData = items => {
+    let chartData = _.map(items, (item) => {
+      return [item.name, item.percentage]
+    })
+
+    chartData = [['Item', 'Spending'], ...chartData]
+    this.setState({discretionaryData: chartData})
+  }
+
+  handleSubmit() {
+    const allocations = _.map(this.state.temp_items, (item) => item.percentage * 100)
+    this.props.submitAllocations(allocations)
+    this.setState({disableControls: true})
+  }
 
   render() {
     const classes = this.props.classes
@@ -89,7 +127,7 @@ class AllocationCard extends Component {
         </Typography>
         <div className={classes.section}>
           <Typography type="title" component="p">
-            Here's what the Federal Budget looks like?
+            Here's what the Federal Budget looks like:
           </Typography>
         </div>
         <br />
@@ -118,9 +156,22 @@ class AllocationCard extends Component {
               graphId="discretionary"
               chartData={this.state.discretionaryData}
             />
-            <DiscretionaryControls />
+            <DiscretionaryControls disable={this.state.disableControls}
+                                   handleChange={this.handleControlChange}
+            />
+            <br />
+            { !this.state.disableControls ? (
+              <Button raised
+                      color="primary"
+                      className={classes.button}
+                      disabled={this.state.disableControls}
+                      onClick={() => this.handleSubmit()}>
+                Submit Allocation
+              </Button>
+              ): (<p>Thanks for submitting your budget allocations for 2018!</p>)}
           </TabContainer>
           <TabContainer>
+            <br />
             <Typography type="title" component="p">
               2018 Mandatory Budget
             </Typography>
@@ -136,6 +187,7 @@ class AllocationCard extends Component {
             </Typography>
           </TabContainer>
           <TabContainer>
+            <br />
             <Typography type="title" component="p">
               2018 Total Budget
             </Typography>
@@ -158,13 +210,13 @@ class AllocationCard extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    allocatableAmount: '1000',
+    allocatableAmount: parseFloat(state.tax && state.tax.taxAmount) / 10
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    submitAllocations: (allocations) => dispatch(submitAllocations(allocations))
   }
 }
 

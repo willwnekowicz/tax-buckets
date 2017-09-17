@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
+import { updateAllocations } from './AllocationActions'
+
 import { withStyles } from 'material-ui/styles'
 import Grid from 'material-ui/Grid'
 
@@ -35,46 +37,66 @@ class DiscretionaryControls extends Component {
 
   handleChange = (event, index) => {
     let newItems = [...this.state.items]
-    newItems[index].percentage = parseFloat(event.target.value)
-    this.setState({ items: newItems });
+    let startingValue = newItems[index].percentage
+    let endingValue = parseFloat(event.target.value)
+
+    newItems = _.map(newItems, (item) => {
+      item.percentage = item.percentage - ((endingValue - startingValue) / 12)
+      if(item.percentage < 0) {
+        item.percentage = 0.0
+      } else if(item.percentage > 100) {
+        item.percentage = 100.0
+      }
+      return item
+    })
+
+    newItems[index].percentage = endingValue
+    this.setState({items: newItems})
+    this.props.handleChange(newItems)
   }
 
   render() {
+    const { disable } = this.props
+    let allocationItems = this.state.items
+
     return (
       <div>
         <Grid container>
           <Grid item xs={4}>
-            { Object.keys(this.state.items.slice(0,4)).map((index) => {
-              let item = this.state.items[index]
+            { Object.keys(allocationItems.slice(0,4)).map((index) => {
+              let item = allocationItems[index]
               return (
                 <div key={index}>
                   <SliderControl item={item.name}
                                  value={item.percentage}
+                                 disable={disable}
                                  onChange={(e) => this.handleChange(e, index)} />
                 </div>
               )
             })}
           </Grid>
           <Grid item xs={4}>
-            { Object.keys(this.state.items.slice(4,8)).map((index) => {
-              let item = this.state.items.slice(4,8)[index]
+            { Object.keys(allocationItems.slice(4,8)).map((index) => {
+              let item = allocationItems.slice(4,8)[index]
               return (
-                <div key={index}>
+                <div key={parseInt(index)+4}>
                   <SliderControl item={item.name}
                                  value={item.percentage}
-                                 onChange={(e) => this.handleChange(e, index + 4)} />
+                                 disable={disable}
+                                 onChange={(e) => this.handleChange(e, parseInt(index) + 4)} />
                 </div>
               )
             })}
           </Grid>
           <Grid item xs={4}>
-            { Object.keys(this.state.items.slice(8,12)).map((index) => {
-              let item = this.state.items.slice(8,12)[index]
+            { Object.keys(allocationItems.slice(8,12)).map((index) => {
+              let item = allocationItems.slice(8,12)[index]
               return (
-                <div key={index}>
+                <div key={parseInt(index)+8}>
                   <SliderControl item={item.name}
                                  value={item.percentage}
-                                 onChange={(e) => this.handleChange(e, index + 8)} />
+                                 disable={disable}
+                                 onChange={(e) => this.handleChange(e, parseInt(index) + 8)} />
                 </div>
               )
             })}
@@ -87,13 +109,13 @@ class DiscretionaryControls extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-
+    // allocationItems: state.allocations && state.allocations.items
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    // updateAllocations: (allocations) => dispatch(updateAllocations(allocations))
   }
 }
 

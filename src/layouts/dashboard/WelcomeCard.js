@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { submitTaxAmount } from './DashboardActions'
+
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -41,6 +43,10 @@ class WelcomeCard extends Component {
     });
   }
 
+  handleStart = () => {
+    this.props.submitTaxAmount(this.state.taxAmount)
+  }
+
   render() {
     const classes = this.props.classes
     const user = this.props.user
@@ -70,7 +76,11 @@ class WelcomeCard extends Component {
           />
           <br />
           <br />
-          <Button raised color="primary" className={classes.button}>
+          <Button raised
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => this.handleStart()}
+          >
             Let's Start
           </Button>
         </div>
@@ -85,7 +95,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    submitTaxAmount: (amount) => dispatch(submitTaxAmount(amount))
   }
 }
 

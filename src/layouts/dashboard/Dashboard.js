@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 
+import WelcomeCard from './WelcomeCard'
+import AllocationCard from './AllocationCard'
+
+
 class Dashboard extends Component {
   constructor(props, { authData }) {
     super(props)
@@ -7,12 +11,14 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { authData } = this.props
+
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
-            <h1>Dashboard</h1>
-            <p><strong>Congratulations {this.props.authData.name}!</strong> If you're seeing this page, you've logged in with your own smart contract successfully.</p>
+          <WelcomeCard user={authData} />
+          <AllocationCard user={authData} />
           </div>
         </div>
       </main>

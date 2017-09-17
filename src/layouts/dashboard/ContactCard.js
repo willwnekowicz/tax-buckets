@@ -58,8 +58,27 @@ class ContactCard extends Component {
           Thanks for submitting your 2018 Budget Allocations.
         </Typography>
         <div className={classes.section}>
+          <Typography type="subheader" component="p">
+            Try it yourself at
+          </Typography>
           <Typography type="title" component="p">
-            Donate: buckets.eth
+            taxbuckets.com
+          </Typography>
+        </div>
+        <div className={classes.section}>
+          <Typography type="subheader" component="p">
+            Available on
+          </Typography>
+          <Typography type="title" component="p">
+            Ropsten Testnet
+          </Typography>
+        </div>
+        <div className={classes.section}>
+          <Typography type="subheader" component="p">
+            Donate
+          </Typography>
+          <Typography type="title" component="p">
+            buckets.eth
           </Typography>
         </div>
       </Paper>
